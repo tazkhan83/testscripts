@@ -5,9 +5,11 @@ import logging
 from argparse import ArgumentParser
 from logging.handlers import RotatingFileHandler
 from threading import Thread
+from string import ascii_uppercase
 
+# Example "./log_generator_multithreaded.py -l 1000 -s 60", will generate a 10 logfiles of 3 MB each (30MB total)
+# Node: Time taken is dependent on processing power
 
-# Example "./loggenerator.py -l 10000 -s 60", will generate a 5 logfiles of 27 MB each (135MB total)
 
 def createRotatingLog(filename):
     print("Creating Logger For %s" % (filename))
@@ -27,6 +29,8 @@ def writeToRotatingLog(logger):
 
 
 if __name__ == "__main__":
+    start = time.time()
+
     parser = ArgumentParser()
 
     parser.add_argument("-l", "--lps", dest="lps",
@@ -37,11 +41,16 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    start = time.clock()
+    print("Writing %s loglines per second for %s seconds to 10 files loladtestA.log->loadtestJ.log" % (args.lps, args.seconds))
 
-    print("Writing %s loglines per second for %s seconds to 5 files loladtestA.log->loadtestE.log" % (args.lps, args.seconds))
+    fileList = []
 
-    fileList = ["loadtestA.log", "loadtestB.log", "loadtestC.log", "loadtestD.log", "loadtestE.log"]
+    for c in ascii_uppercase:
+        # create filnames from with extensions A-J
+        if c == "K":
+            break
+        filename = "loadtest%s_%s.log" % (c, int(time.time()))
+        fileList.append(filename)
 
     threadsList = []
 
@@ -54,4 +63,4 @@ if __name__ == "__main__":
     for j in range(len(threadsList)):
         threadsList[j].join()
 
-    print("Completed Writing Logfiles in %s seconds" % (time.clock() - start))
+    print("Completed Writing Logfiles in %s seconds" % (time.time() - start))
