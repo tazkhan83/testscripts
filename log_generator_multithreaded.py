@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 from threading import Thread
 from string import ascii_uppercase
 
-# Example "./log_generator_multithreaded.py -l 1000 -s 60", will generate a 10 logfiles of 3 MB each (30MB total)
+# Example "./log_generator_multithreaded.py -l 1000 -s 60", will generate a 26 logfiles of 3 MB each
 # Node: Time taken is dependent on processing power
 
 
@@ -41,14 +41,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print("Writing %s loglines per second for %s seconds to 10 files loladtestA.log->loadtestJ.log" % (args.lps, args.seconds))
+    print("Writing %s loglines per second for %s seconds to 26 files loladtestA.log->loadtestZ.log" % (args.lps, args.seconds))
 
     fileList = []
 
     for c in ascii_uppercase:
-        # create filnames from with extensions A-J
-        if c == "K":
-            break
         filename = "loadtest%s_%s.log" % (c, int(time.time()))
         fileList.append(filename)
 
